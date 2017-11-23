@@ -48,7 +48,7 @@
                   var Itest_recommendation=["text","id","src"]
                   if(this.contains(Itest_recommendation,attrname) )
                   {
-                  itestattrrow.style="background:#ee5e0f";
+                  itestattrrow.style="background:#CC00CC";
                   }
                   attrname_td.innerText=attrname;
                   attrvalue_td.innerText="value";
