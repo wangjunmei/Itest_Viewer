@@ -50,7 +50,7 @@
                    var titlerow= document.createElement("tr");
                   if(this.contains(Itest_recommendation,attrname) )
                   {
-                  itestattrrow.style="background:#CC00CC";
+                  itestattrrow.style="background:#00FF00";
 
                   }
                   attrname_td.innerText=attrname;
@@ -210,7 +210,7 @@
                     {
                         //如果推荐属性组件>1  取消推荐
                        if(this.getelementnum(this.$ary[a],resultary[a])>1){
-                       attrrow.style="color:#F00";
+                       attrrow.style="background-color:#FF3333";
                        }
                        //根据 class获取属性行并做对应的值替换
                        attrrow.lastChild.innerText=this.getelementnum(this.$ary[a],resultary[a])>1?resultary[a]+"  ("+this.getelementnum(this.$ary[a],resultary[a])+" components)":resultary[a];
