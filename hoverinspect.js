@@ -45,10 +45,13 @@
                   itestattrrow.className = attrname+'class';
                   var attrname_td = document.createElement("td");
                   var attrvalue_td = document.createElement("td");
-                  var Itest_recommendation=["text","id","src"]
+                   //初始化推荐数组
+                  Itest_recommendation=["text","id","src"];
+                   var titlerow= document.createElement("tr");
                   if(this.contains(Itest_recommendation,attrname) )
                   {
                   itestattrrow.style="background:#CC00CC";
+
                   }
                   attrname_td.innerText=attrname;
                   attrvalue_td.innerText="value";
@@ -114,7 +117,7 @@
       this.$tbody = document.createElement("tbody");
 
       //创建表内容
-      this.$ary = ["id","name","class","text","value","title","placeholder","src","xpath"];
+      this.$ary = ["text","id","src","name","class","value","title","placeholder","xpath"];
       for(var a in this.$ary) {
           this.$tbody.appendChild(this.creatattrrow(this.$ary[a]));
       }
@@ -200,13 +203,17 @@
 
       var tname = this.$target.tagName;
      // itest支持的定位属性有： text();  title属性，　value属性，　placeholder属性, id属性, name属性,class属性,src属性,xpath
-     var resultary=[this.getattribute("id"),this.getattribute("name"),this.getattribute("class"),this.getelementtext(),this.getattribute("value"),this.getattribute("title"),this.getattribute("placeholder"),this.getattribute("src"),"xpath:"+this.readXPath(this.$target)];
+     var resultary=[this.getelementtext(),this.getattribute("id"),this.getattribute("src"),this.getattribute("name"),this.getattribute("class"),this.getattribute("value"),this.getattribute("title"),this.getattribute("placeholder"),"xpath:"+this.readXPath(this.$target)];
      for(var a in this.$ary) {
                 var  attrrow=this.$shadow.querySelector("."+this.$ary[a]+"class");
                 if(resultary[a] !== "")
                     {
+                        //如果推荐属性组件>1  取消推荐
+                       if(this.getelementnum(this.$ary[a],resultary[a])>1){
+                       attrrow.style="color:#F00";
+                       }
                        //根据 class获取属性行并做对应的值替换
-                       attrrow.lastChild.innerText=this.getelementnum(this.$ary[a],resultary[a])>1?resultary[a]+"("+this.getelementnum(this.$ary[a],resultary[a])+")":resultary[a];
+                       attrrow.lastChild.innerText=this.getelementnum(this.$ary[a],resultary[a])>1?resultary[a]+"  ("+this.getelementnum(this.$ary[a],resultary[a])+" components)":resultary[a];
                    }else{
                    //属性值为空的行移除
                     this.$tbody.removeChild(attrrow);
