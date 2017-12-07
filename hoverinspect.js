@@ -46,7 +46,7 @@
                   var attrname_td = document.createElement("td");
                   var attrvalue_td = document.createElement("td");
                    //初始化推荐数组
-                  Itest_recommendation=["text","id","src"];
+                  Itest_recommendation=["text","id","src","name","class","value","title","placeholder"];
                    var titlerow= document.createElement("tr");
                   if(this.contains(Itest_recommendation,attrname) )
                   {
@@ -135,8 +135,22 @@
     },
     //注册事件
     registerEvents: function() {
-        document.addEventListener('contextmenu', this.log,false);
-        document.addEventListener('scroll', this.layout);
+    /*iframe可能是通过src外联的网页，不能跨域嵌入脚本
+    // for 同源iframe
+    var iframeArray=new Array();
+    iframeArray=document.getElementsByTagName("iframe");
+    try{
+    for(var i=0;i<iframeArray.length;i++){
+    iframeArray[i].contentWindow.oncontextmenu = function(){return false};
+    iframeArray[i].contentWindow.addEventListener('contextmenu',this.log,false);
+    }
+  }catch(e){
+  //跨域，不予提示
+   alert("请使用inspetcor");
+  }
+  */
+        window.addEventListener('contextmenu', this.log,false);
+        window.addEventListener('scroll', this.layout);
         window.addEventListener('resize', function(){
         this.handleResize();
         this.layout();
@@ -151,14 +165,23 @@
       }
       return returnattr;
 },
+//排除隐藏元素(隐藏属性可以从父组件继承，不能判断是哪层父组件所定义)
+getenableState: function(elementArry) {
+for (x in elementArry)
+ {
+   if(x.currentStyle["display"]=="none"||x.currentStyle["visibility"]=="hidden"||x.currentStyle["opacity "]=="0")
+   elementArry.removeChild(x)
+ }
+      return elementArry.length;
+},
    //获取组件的text  没有则返回  “”
  getelementtext: function() {
     try{
-            text=this.$target.innerText;
+            text=this.$target.textContent.replace(/[\n\r]/g, '');
           }catch(e){
           text="";
           }
-          if(text!== null || text !== undefined || text !=='')
+          if(text!== null || text !== undefined || text !==''|| text !==' ')
           return text;
 },
 //根据 属性名和值返回   css选择器对应的参数值
@@ -172,7 +195,7 @@
  getelementnum: function(attrname,value) {
  //class如果包括空格，css选择器会报错。所以通过getElementsByClassName获取
    if(attrname=="class")
-   return document.getElementsByClassName(value).length;
+    return document.getElementsByClassName(value).length;
    //xpath不会有重复
    if(attrname=="xpath")
       return 1;
@@ -185,6 +208,7 @@
           while (xres = xresult.iterateNext()) {
               xnodes.push(xres);
           }
+          console.log(xnodes);
           return xnodes.length;
    }
    //其他属性
@@ -208,9 +232,12 @@
                 var  attrrow=this.$shadow.querySelector("."+this.$ary[a]+"class");
                 if(resultary[a] !== "")
                     {
-                        //如果推荐属性组件>1  取消推荐
+                        //如果推荐属性组件>1  取消推荐并置底
                        if(this.getelementnum(this.$ary[a],resultary[a])>1){
                        attrrow.style="background-color:#FF3333";
+                       this.$tbody.removeChild(attrrow);
+                       this.$tbody.appendChild(attrrow);
+
                        }
                        //根据 class获取属性行并做对应的值替换
                        attrrow.lastChild.innerText=this.getelementnum(this.$ary[a],resultary[a])>1?resultary[a]+"  ("+this.getelementnum(this.$ary[a],resultary[a])+" components)":resultary[a];
