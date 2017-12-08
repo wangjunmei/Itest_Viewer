@@ -167,12 +167,31 @@
 },
 //排除隐藏元素(隐藏属性可以从父组件继承，不能判断是哪层父组件所定义)
 getenableState: function(elementArry) {
-for (x in elementArry)
+var arr=[];
+for(var i=0,len=elementArry.length;i<len;i++){
+  arr[i]=elementArry[i];
+}
+for (var x=0;x<elementArry.length;x++)
  {
-   if(x.currentStyle["display"]=="none"||x.currentStyle["visibility"]=="hidden"||x.currentStyle["opacity "]=="0")
-   elementArry.removeChild(x)
+  //offsetParent判断父组件用display：none隐藏的组件，
+  //父组件用visibility：hidden隐藏组件 ，被隐藏的子组件visibility也等于hidden
+  //父组件用opacity：0隐藏组件 ，被隐藏的子组件opacity也等于1,这里无法判断
+   if(elementArry[x].offsetParent ==null||window.getComputedStyle(elementArry[x], null).visibility=="hidden"
+   ||window.getComputedStyle(elementArry[x], null).opacity=="0"||elementArry[x].style.display=="none"
+   ||elementArry[x].style.visibility=="hidden"||elementArry[x].style.opacity=="0")
+  {
+    this.removeByValue(arr,elementArry[x]);
+  }
  }
-      return elementArry.length;
+      return arr.length;
+},
+ removeByValue: function(arr, val) {
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i] == val) {
+      arr.splice(i, 1);
+      break;
+    }
+  }
 },
    //获取组件的text  没有则返回  “”
  getelementtext: function() {
@@ -195,7 +214,8 @@ for (x in elementArry)
  getelementnum: function(attrname,value) {
  //class如果包括空格，css选择器会报错。所以通过getElementsByClassName获取
    if(attrname=="class")
-    return document.getElementsByClassName(value).length;
+   // return document.getElementsByClassName(value).length;
+    return this.getenableState(document.getElementsByClassName(value));
    //xpath不会有重复
    if(attrname=="xpath")
       return 1;
@@ -208,12 +228,13 @@ for (x in elementArry)
           while (xres = xresult.iterateNext()) {
               xnodes.push(xres);
           }
-          console.log(xnodes);
-          return xnodes.length;
+          return this.getenableState(xnodes);
+         // return xnodes.length;
    }
    //其他属性
    var locatestr="["+attrname+"="+"'"+value+"'"+"]";
-   return document.querySelectorAll(locatestr).length;
+   return this.getenableState(document.querySelectorAll(locatestr));
+  // return document.querySelectorAll(locatestr).length;
 },
 //右键响应事件
     log: function(e) {
