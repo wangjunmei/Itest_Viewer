@@ -176,6 +176,7 @@ for (var x=0;x<elementArry.length;x++)
   //offsetParent判断父组件用display：none隐藏的组件，
   //父组件用visibility：hidden隐藏组件 ，被隐藏的子组件visibility也等于hidden
   //父组件用opacity：0隐藏组件 ，被隐藏的子组件opacity也等于1,这里无法判断
+  //父组件隐藏，子组件可能覆盖定义显示属性
    if(elementArry[x].offsetParent ==null||window.getComputedStyle(elementArry[x], null).visibility=="hidden"
    ||window.getComputedStyle(elementArry[x], null).opacity=="0"||elementArry[x].style.display=="none"
    ||elementArry[x].style.visibility=="hidden"||elementArry[x].style.opacity=="0")
@@ -196,7 +197,7 @@ for (var x=0;x<elementArry.length;x++)
    //获取组件的text  没有则返回  “”
  getelementtext: function() {
     try{
-            text=this.$target.textContent.replace(/[\n\r]/g, '');
+            text=this.$target.textContent.replace(/[\n\r\s]/g, '');
           }catch(e){
           text="";
           }
