@@ -15,9 +15,18 @@
   top:50%;
   left:0;
   padding: 4px;
-  -webkit-animation: 0.4s tl-show forwards;
-  animation: 0.4s tl-show forwards;
 }
+  .tl-wrap.-out .tl-codeWrap {
+  -webkit-animation: 0.5s tl-hide forwards !important;
+  }
+  @-webkit-keyframes tl-hide {
+  45% {
+  -webkit-transform: translate(0, 30%);
+  }
+  100% {
+  -webkit-transform: translate(0, -100%);
+  };
+  }
   .theadclass {
   background-color: #3300CC;
   color:#FFFFFF;

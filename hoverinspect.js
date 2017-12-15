@@ -383,6 +383,7 @@ for (var x=0;x<elementArry.length;x++)
     },
 
       deactivate: function() {
+         this.$wrap.classList.add('-out');
           document.removeEventListener('contextmenu', this.log);
           setTimeout(function() {
             document.body.removeChild(this.$host);
