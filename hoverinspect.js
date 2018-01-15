@@ -388,6 +388,9 @@ for (var x=0;x<elementArry.length;x++)
           setTimeout(function() {
             document.body.removeChild(this.$host);
           }.bind(this), 600);
+          document.oncontextmenu = function(){
+          　　return true;
+          }
         }
       };
 
