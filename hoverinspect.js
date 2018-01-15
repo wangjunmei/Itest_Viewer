@@ -46,6 +46,12 @@
                   var attrname_td = document.createElement("td");
                   var attrvalue_td = document.createElement("td");
                    //初始化推荐数组
+                   /**********************************
+                   **********************************
+                   添加可配置项醒目位置提醒
+                   **********************************
+                   **********************************
+                   **************************************/
                   Itest_recommendation=["text","id","src","name","class","value","title","placeholder"];
                    var titlerow= document.createElement("tr");
                   if(this.contains(Itest_recommendation,attrname) )
@@ -115,8 +121,13 @@
       thead.appendChild(myvalue);
 
       this.$tbody = document.createElement("tbody");
-
-      //创建表内容
+                   /**********************************
+                   **********************************
+                   添加可配置项醒目位置提醒
+                   **********************************
+                   **********************************
+                   **************************************/
+        //创建表内容
       this.$ary = ["text","id","src","name","class","value","title","placeholder","xpath"];
       for(var a in this.$ary) {
           this.$tbody.appendChild(this.creatattrrow(this.$ary[a]));
