@@ -95,7 +95,7 @@
       this.$host.style.cssText = 'all: initial;';
 
 
-      this.$shadow = this.$host.createShadowRoot();
+      this.$shadow = this.$host.attachShadow({mode:'open'});
       document.body.appendChild(this.$host);
 
       var templateMarkup = document.createElement("div");
